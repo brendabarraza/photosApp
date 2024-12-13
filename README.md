@@ -106,9 +106,6 @@ This application is an image sharing app developed in Swift for iPhone and iPad.
 ## Known Issues
 - Ensure you have a stable internet connection as the app relies on Firebase services.
 
-## License
-This project is licensed under the [MIT License](LICENSE).
-
 ---
 
 ## Figma Prototype
