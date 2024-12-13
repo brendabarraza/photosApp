@@ -33,13 +33,13 @@ This application is an image sharing app developed in Swift for iPhone and iPad.
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/brendabarraza/photosApp.git
    ```
 
 2. Open the project in Xcode:
    ```bash
-   cd <project-directory>
-   open <project-name>.xcworkspace
+   cd photosApp
+   open crudApp.xcworkspace
    ```
 
 3. Install dependencies using CocoaPods:
@@ -115,12 +115,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 You can view the Figma prototype of the app [here](https://www.figma.com/proto/aCtVNm5U7a7kZBKAJvdYQa/Untitled?node-id=21-132&node-type=canvas&t=JXzKPO1V5GT5zesk-1&scaling=scale-down&content-scaling=fixed&page-id=5%3A12&starting-point-node-id=21%3A132).
 
-## Installation
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/brendabarraza/photosApp.git
 
 
 
