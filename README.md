@@ -109,9 +109,9 @@ This application is an image sharing app developed in Swift for iPhone and iPad.
 ---
 
 
-<img src="blog/captures/Frame 1.png" alt="Otra pantalla" width="700">
-<img src="blog/captures/Frame 2.png" alt="Otra pantalla" width="700">
-<img src="blog/captures/Frame 3.png" alt="Otra pantalla" width="700">
+<img src="PhotosApp 23-11-18-714/captures/Frame 1.png" alt="Otra pantalla" width="700">
+<img src="PhotosApp 23-11-18-714/captures/Frame 2.png" alt="Otra pantalla" width="700">
+<img src="PhotosApp 23-11-18-714/captures/Frame 3.png" alt="Otra pantalla" width="700">
 
 
 ## Figma Prototype
