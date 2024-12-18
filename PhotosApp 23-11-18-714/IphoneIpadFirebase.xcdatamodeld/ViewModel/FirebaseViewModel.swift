@@ -1,11 +1,3 @@
-//
-//  FirebaseViewModel.swift
-//  IphoneIpadFirebase
-//
-//  Created by brenda on 10/09/2024.
-//
-
-
 import Foundation
 import Firebase
 import FirebaseStorage
@@ -37,7 +29,6 @@ class FirebaseViewModel: ObservableObject {
                 let userId = user.uid
                 let db = Firestore.firestore()
                 
-                // Guardar solo el userId en la colección "usuarios"
                 db.collection("usuarios").document(userId).setData([
                     "userId": userId
                 ]) { error in
@@ -59,9 +50,6 @@ class FirebaseViewModel: ObservableObject {
             }
         }
     }
-
-    
-    /// BASE DE DATOS
     
     func save(titulo: String, desc: String, plataforma: String, portada: Data, idUser: String, completion: @escaping (_ done: Bool) -> Void) {
         let storage = Storage.storage().reference()
@@ -71,7 +59,6 @@ class FirebaseViewModel: ObservableObject {
         metadata.contentType = "image/png"
         metadata.customMetadata = ["userId": idUser]
         
-        // Subir la imagen al almacenamiento
         directorio.putData(portada, metadata: metadata) { _, error in
             if let error = error {
                 print("Error al subir la imagen al almacenamiento: \(error.localizedDescription)")
@@ -81,7 +68,6 @@ class FirebaseViewModel: ObservableObject {
             
             print("Imagen guardada exitosamente")
             
-            // Obtener la URL de descarga de la imagen
             directorio.downloadURL { url, error in
                 if let error = error {
                     print("Error al obtener la URL de descarga: \(error.localizedDescription)")
@@ -95,7 +81,6 @@ class FirebaseViewModel: ObservableObject {
                     return
                 }
                 
-                // Guardar los datos en la colección principal
                 let db = Firestore.firestore()
                 let id = UUID().uuidString
                 guard let email = Auth.auth().currentUser?.email else {
@@ -112,7 +97,6 @@ class FirebaseViewModel: ObservableObject {
                     "email": email
                 ]
                 
-                // Guardar en la colección principal
                 let mainCollection = db.collection(plataforma).document(id)
                 mainCollection.setData(campos) { error in
                     if let error = error {
@@ -123,7 +107,6 @@ class FirebaseViewModel: ObservableObject {
                     
                     print("Datos guardados en la colección principal")
                     
-                    // Guardar en la subcolección 'imagenes' dentro del documento del usuario
                     let userCollection = db.collection("usuarios").document(idUser).collection("imagenes").document(id)
                     userCollection.setData(campos) { error in
                         if let error = error {
@@ -138,16 +121,6 @@ class FirebaseViewModel: ObservableObject {
             }
         }
     }
-
-
-
-
-
-
-
-
-    
-    // MOSTRAR
     
     func getData(plataforma: String){
         let db = Firestore.firestore()
@@ -218,22 +191,17 @@ class FirebaseViewModel: ObservableObject {
                 }
             }
         }
-    
-    //ELIMINAR
-    
+        
     func delete(index: FirebaseModel, plataforma: String) {
         guard let currentUserId = Auth.auth().currentUser?.uid else {
             print("No hay usuario autenticado")
             return
         }
         
-        // Verifica si el usuario actual es el dueño de la imagen
         if index.idUser == currentUserId {
-            // Eliminar del Firestore en la colección principal
             let id = index.id
             let db = Firestore.firestore()
             
-            // Eliminar de la colección principal (categoría general)
             db.collection(plataforma).document(id).delete { error in
                 if let error = error {
                     print("Error al eliminar de la colección principal: \(error.localizedDescription)")
@@ -242,7 +210,6 @@ class FirebaseViewModel: ObservableObject {
                 }
             }
 
-            // Eliminar la imagen del Storage
             let imagen = index.portada
             let borrarImagen = Storage.storage().reference(forURL: imagen)
             borrarImagen.delete { error in
@@ -253,7 +220,6 @@ class FirebaseViewModel: ObservableObject {
                 }
             }
 
-            // Intentar eliminar de la subcolección en la colección usuarios
             db.collection("usuarios").document(currentUserId).collection("imagenes").document(id).delete { error in
                 if let error = error {
                     print("Error al eliminar de la subcolección 'imagenes': \(error.localizedDescription)")
@@ -262,8 +228,6 @@ class FirebaseViewModel: ObservableObject {
                 }
             }
             
-
-            // Intentar eliminar de todas las categorías
             let categorias = ["Travel", "Pets", "Food"]
             for categoria in categorias {
                 db.collection(categoria).document(id).delete { error in
@@ -289,7 +253,6 @@ class FirebaseViewModel: ObservableObject {
             let id = index.id
             let db = Firestore.firestore()
 
-            // Eliminar de la subcolección 'favoritos' del usuario actual
             db.collection("usuarios").document(currentUserId).collection("favoritos").document(id).delete { error in
                 if let error = error {
                     print("Error al eliminar de la subcolección 'favoritos': \(error.localizedDescription)")
@@ -299,8 +262,6 @@ class FirebaseViewModel: ObservableObject {
             }
         }
 
-
-    
     func edit(titulo: String, desc: String, plataforma: String, id: String, index: FirebaseModel, completion: @escaping (_ done: Bool) -> Void) {
         guard let currentUserId = Auth.auth().currentUser?.uid else {
             print("No se pudo obtener el ID del usuario actual.")
@@ -308,18 +269,13 @@ class FirebaseViewModel: ObservableObject {
             return
         }
 
-        // Imprime el ID del usuario que intenta editar
         print("Usuario que intenta editar: \(currentUserId)")
-
-        // Imprime el ID del usuario que subió la imagen
         print("ID del usuario que subió la imagen: \(index.idUser)")
 
-        // Verifica si el usuario actual es el dueño de la imagen
         if index.idUser == currentUserId {
             let db = Firestore.firestore()
             let documentRef = db.collection(plataforma).document(id)
             
-            // Verifica si el documento existe antes de actualizarlo
             documentRef.getDocument { document, error in
                 if let error = error {
                     print("Error al obtener el documento: \(error.localizedDescription)")
@@ -345,19 +301,12 @@ class FirebaseViewModel: ObservableObject {
             }
         } else {
             print("No tienes permisos para editar esta imagen")
-            // Imprime también el ID del usuario que está intentando editar
             print("ID del usuario que intentó editar: \(currentUserId)")
             completion(false)
         }
     }
 
-
-
-
-    
-    // EDITAR CON IMAGEN
     func editWithImage(titulo: String, desc: String, plataforma: String, id: String, index: FirebaseModel, portada: Data, completion: @escaping (_ done: Bool) -> Void) {
-        // Eliminar la imagen anterior
         let imagen = index.portada
         let borrarImagen = Storage.storage().reference(forURL: imagen)
         borrarImagen.delete { error in
@@ -366,10 +315,7 @@ class FirebaseViewModel: ObservableObject {
                 completion(false)
                 return
             }
-            
             print("Imagen eliminada del Storage")
-
-            // Subir la nueva imagen
             let storage = Storage.storage().reference()
             let nombrePortada = UUID().uuidString
             let directorio = storage.child("imagenes/\(nombrePortada)")
@@ -382,10 +328,7 @@ class FirebaseViewModel: ObservableObject {
                     completion(false)
                     return
                 }
-                
                 print("Nueva imagen guardada exitosamente")
-
-                // Obtener la URL de descarga de la nueva imagen
                 directorio.downloadURL { url, error in
                     if let error = error {
                         print("Error al obtener la URL de descarga de la nueva imagen: \(error.localizedDescription)")
@@ -398,8 +341,6 @@ class FirebaseViewModel: ObservableObject {
                         completion(false)
                         return
                     }
-                    
-                    // Actualizar el texto y la URL de la imagen en Firestore
                     let db = Firestore.firestore()
                     let campos: [String: Any] = [
                         "titulo": titulo,
@@ -415,15 +356,12 @@ class FirebaseViewModel: ObservableObject {
                         }
                         if let document = document, document.exists {
                             print("Documento encontrado. Procediendo a actualizar...")
-                            // Llama a la función para actualizar el documento aquí
                         } else {
                             print("Documento no encontrado.")
                             completion(false)
                         }
                     }
 
-
-                    // Actualizar en la colección principal
                     db.collection(plataforma).document(id).updateData(campos) { error in
                         if let error = error {
                             print("Error al actualizar el documento en Firestore: \(error.localizedDescription)")
@@ -433,7 +371,6 @@ class FirebaseViewModel: ObservableObject {
                         
                         print("Documento actualizado en la colección principal")
                         
-                        // Actualizar en la subcolección 'imagenes' dentro del documento del usuario
                         db.collection("usuarios").document(index.idUser).collection("imagenes").document(id).updateData(campos) { error in
                             if let error = error {
                                 print("Error al actualizar en la subcolección 'imagenes': \(error.localizedDescription)")
@@ -447,7 +384,5 @@ class FirebaseViewModel: ObservableObject {
                 }
             }
         }
-    }
-
-    
+    }   
 }

@@ -1,10 +1,3 @@
-//
-//  PortadaViewModel.swift
-//  IphoneIpadFirebase
-//
-//  Created by brenda on 10/09/2024.
-//
-
 import Foundation
 import Firebase
 import FirebaseStorage

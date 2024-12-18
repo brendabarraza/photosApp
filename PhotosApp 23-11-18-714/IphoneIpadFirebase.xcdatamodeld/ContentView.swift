@@ -1,20 +1,12 @@
-//
-//  ContentView.swift
-//  IphoneIpadFirebase
-//
-//  Created by brenda on 10/09/2024.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var loginShow: FirebaseViewModel
     
     init() {
-        // Personalizar la apariencia de la barra de pestañas
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
-        tabBarAppearance.backgroundColor = UIColor.white // Fondo blanco
+        tabBarAppearance.backgroundColor = UIColor.white 
         UITabBar.appearance().standardAppearance = tabBarAppearance
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
     }
@@ -47,7 +39,7 @@ struct ContentView: View {
                             Text("Profile")
                         }
                 }
-                .accentColor(Color("fondo 3")) // Color de los iconos y textos
+                .accentColor(Color("fondo 3"))
             } else {
                 Login()
             }

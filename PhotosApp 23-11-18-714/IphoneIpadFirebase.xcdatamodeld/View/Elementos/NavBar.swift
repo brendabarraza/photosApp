@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import Firebase
 
@@ -18,14 +16,12 @@ struct NavBar: View {
                 .foregroundColor(.white)
             Spacer()
             if device == .pad {
-                // menu ipad
                 HStack(spacing: 25){
                     ButtonView(index: $index, menu: $menu, title: "Travel")
                     ButtonView(index: $index, menu: $menu, title: "Pets")
                     ButtonView(index: $index, menu: $menu, title: "Food")
                 }
             }else{
-                // menu iphone
                 Button(action:{
                     withAnimation{
                         menu.toggle()

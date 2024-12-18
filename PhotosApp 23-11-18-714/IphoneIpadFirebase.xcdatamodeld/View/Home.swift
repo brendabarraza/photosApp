@@ -1,4 +1,3 @@
-
 import SwiftUI
 import Firebase
 struct Home: View {
