@@ -1,4 +1,4 @@
-# Image Sharing App for iPhone and iPad
+# Image Sharing App 
 
 ## Description
 This application is an image sharing app developed in Swift for iPhone and iPad. The app enables users to register, log in, and perform CRUD operations on images. Users can like any image and manage their profile, including viewing their uploaded images. The app features views for Home, Profile, Upload, and Likes.
